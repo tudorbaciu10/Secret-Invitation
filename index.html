@@ -6,6 +6,7 @@
   <title>O Surpriză Specială ❤️</title>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
   <style>
     /* ── RESET & BASE ───────────────────────────────────────── */
@@ -61,7 +62,8 @@
     .screen {
       position: fixed; inset: 0; z-index: 10;
       display: none;
-      align-items: center; justify-content: center;
+      flex-direction: column;  /* column so margin:auto centers child vertically */
+      align-items: center;     /* horizontal centering */
       padding: 20px;
       /* bottom padding accounts for FABs so content is never hidden below them */
       padding-bottom: max(80px, calc(70px + env(safe-area-inset-bottom, 0px)));
@@ -72,6 +74,13 @@
     }
     .screen.visible { display: flex; }
     .screen.shown   { opacity: 1; }
+
+    /*
+     * margin:auto on a flex-column child centers it vertically when there is
+     * free space, and collapses to 0 when the content is taller than the
+     * viewport — so the card is always reachable via scroll on small phones.
+     */
+    .screen > .card { margin-top: auto; margin-bottom: auto; }
 
     /* ── FLOATING HEARTS ────────────────────────────────────── */
     #hearts {
@@ -231,6 +240,8 @@
       background: linear-gradient(135deg, #FF6B81, #FFB6C1);
       z-index: 100;
     }
+    /* loading inner div is not .card, so apply the same centering trick */
+    #s0 > div { margin: auto; }
     .ld-heart { font-size: 64px; display: block; margin-bottom: 18px; animation: hb 1s ease-in-out infinite; }
     @keyframes hb {
       0%,100% { transform: scale(1);   }
@@ -610,6 +621,15 @@
   ════════════════════════════════════════════════════ -->
   <script>
     // ─────────────────────────────────────────────────────
+    //  EMAILJS CONFIG — replace with your real values
+    //  (see setup instructions at the bottom of this file)
+    // ─────────────────────────────────────────────────────
+    const EJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';   // EmailJS → Account → Public Key
+    const EJS_SERVICE_ID  = 'YOUR_SERVICE_ID';   // EmailJS → Email Services → Service ID
+    const EJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';  // EmailJS → Email Templates → Template ID
+    const RECIPIENT_EMAIL = 'your@email.com';    // emailul tău unde vrei să primești răspunsul
+
+    // ─────────────────────────────────────────────────────
     //  STATE
     // ─────────────────────────────────────────────────────
     let current   = 0;
@@ -620,10 +640,15 @@
     let masterGain = null;
     let loopTimer = null;
 
+    // saved form data — populated in confirmDate(), used in finalSend()
+    let savedDate = '', savedTime = '', savedNote = '', savedCode = '';
+
     // ─────────────────────────────────────────────────────
     //  BOOT
     // ─────────────────────────────────────────────────────
     window.addEventListener('load', () => {
+      emailjs.init(EJS_PUBLIC_KEY);
+
       spawnHearts();
       document.addEventListener('click', onBodyClick);
       document.getElementById('btn-music').addEventListener('click', toggleMusic);
@@ -919,6 +944,12 @@
       let code = 'DATE-';
       for (let i = 0; i < 6; i++) code += CHARS[Math.floor(Math.random() * CHARS.length)];
 
+      // persist for emailjs
+      savedDate = fmtDate;
+      savedTime = timeVal;
+      savedNote = noteVal;
+      savedCode = code;
+
       // populate ticket
       document.getElementById('t-date').textContent = fmtDate;
       document.getElementById('t-time').textContent = timeVal;
@@ -950,14 +981,43 @@
     }
 
     // ─────────────────────────────────────────────────────
-    //  SCREEN 7 – FINAL
+    //  SCREEN 7 – FINAL  (sends email via EmailJS)
     // ─────────────────────────────────────────────────────
     function finalSend() {
-      const btn = document.getElementById('final-btn');
-      btn.textContent = 'Trimis! ❤️';
-      btn.disabled = true; btn.style.opacity = '.75';
+      const btn  = document.getElementById('final-btn');
+      const okEl = document.getElementById('final-ok');
 
-      document.getElementById('final-ok').style.display = 'block';
+      btn.textContent = 'Se trimite... ⏳';
+      btn.disabled    = true;
+      btn.style.opacity = '.75';
+
+      emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, {
+        to_email: RECIPIENT_EMAIL,
+        data:     savedDate,
+        ora:      savedTime,
+        nota:     savedNote || '—',
+        cod:      savedCode
+      })
+      .then(() => {
+        btn.textContent = 'Trimis! ❤️';
+        okEl.innerHTML  =
+          '<span style="font-family:\'Dancing Script\',cursive;font-size:1.4rem;color:var(--rp)">' +
+          '❤️ Ne vedem în curând! ❤️</span>';
+        okEl.style.display = 'block';
+        celebrate();
+      })
+      .catch(err => {
+        console.error('EmailJS error:', err);
+        btn.textContent  = 'Încearcă din nou 🔁';
+        btn.disabled     = false;
+        btn.style.opacity = '1';
+        okEl.innerHTML   =
+          '<span style="color:#e57373;font-size:.9rem">⚠️ Trimiterea a eșuat. Verifică configurația EmailJS.</span>';
+        okEl.style.display = 'block';
+      });
+    }
+
+    function celebrate() {
       launchConfetti();
       for (let i = 0; i < 22; i++) {
         setTimeout(() => spawnClickHeart(
@@ -1060,6 +1120,35 @@
       c.width  = window.innerWidth;
       c.height = window.innerHeight;
     });
+
+    /*
+    ╔══════════════════════════════════════════════════════════╗
+    ║              CONFIGURARE EMAILJS (pași rapizi)           ║
+    ╠══════════════════════════════════════════════════════════╣
+    ║ 1. Creează cont gratuit pe https://www.emailjs.com       ║
+    ║                                                          ║
+    ║ 2. Email Services → Add New Service → alege Gmail /      ║
+    ║    Outlook etc. → copiază Service ID                     ║
+    ║                                                          ║
+    ║ 3. Email Templates → Create New Template                 ║
+    ║    Subiect: 🎉 Răspuns invitație - {{cod}}               ║
+    ║    Corp:                                                 ║
+    ║      Data:  {{data}}                                     ║
+    ║      Ora:   {{ora}}                                      ║
+    ║      Notă:  {{nota}}                                     ║
+    ║      Cod:   {{cod}}                                      ║
+    ║    To Email: {{to_email}}                                ║
+    ║    → Save → copiază Template ID                          ║
+    ║                                                          ║
+    ║ 4. Account → General → copiază Public Key               ║
+    ║                                                          ║
+    ║ 5. Înlocuiește în fișier (sus, în secțiunea CONFIG):     ║
+    ║      EJS_PUBLIC_KEY  = 'cheia_ta_publica'               ║
+    ║      EJS_SERVICE_ID  = 'service_xxxxxxx'                ║
+    ║      EJS_TEMPLATE_ID = 'template_xxxxxxx'               ║
+    ║      RECIPIENT_EMAIL = 'emailul_tau@gmail.com'          ║
+    ╚══════════════════════════════════════════════════════════╝
+    */
   </script>
 </body>
 </html>
