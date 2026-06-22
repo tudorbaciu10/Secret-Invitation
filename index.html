@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>O Surpriză Specială ❤️</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    /* ── RESET & BASE ───────────────────────────────────────── */
+    *, *::before, *::after {
+      box-sizing: border-box; margin: 0; padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    /* prevent double-tap zoom on all interactive elements */
+    button, input, textarea, select, a { touch-action: manipulation; }
+
+    /* ── CSS VARIABLES ──────────────────────────────────────── */
+    :root {
+      --lp:   #FFB6C1;
+      --rp:   #FF6B81;
+      --white: #FFFFFF;
+      --spbg: #FCE4EC;
+      --lav:  #E6E6FA;
+      --td:   #4a2040;
+      --tm:   #7a4060;
+      --cbg:  rgba(255,255,255,0.82);
+      --gb:   rgba(255,182,193,0.40);
+      --shadow: 0 20px 60px rgba(255,107,129,.20), 0 5px 20px rgba(255,182,193,.25);
+    }
+
+    /* dark mode */
+    .dark :root, .dark {
+      --spbg: #12060c;
+      --cbg:  rgba(35,15,25,0.88);
+      --gb:   rgba(255,107,129,0.25);
+      --td:   #FFB6C1;
+      --tm:   #FF8E9E;
+    }
+
+    /* ── BACKGROUND ─────────────────────────────────────────── */
+    #bg {
+      position: fixed; inset: 0; z-index: 0;
+      background: linear-gradient(135deg, #FCE4EC 0%, #E6E6FA 55%, #FFF0F5 100%);
+      transition: background .6s;
+    }
+    .dark #bg {
+      background: linear-gradient(135deg, #12060c 0%, #0d0018 55%, #100010 100%);
+    }
+
+    /* ── SCREENS ────────────────────────────────────────────── */
+    .screen {
+      position: fixed; inset: 0; z-index: 10;
+      display: none;
+      align-items: center; justify-content: center;
+      padding: 20px;
+      /* bottom padding accounts for FABs so content is never hidden below them */
+      padding-bottom: max(80px, calc(70px + env(safe-area-inset-bottom, 0px)));
+      opacity: 0;
+      transition: opacity .55s ease;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .screen.visible { display: flex; }
+    .screen.shown   { opacity: 1; }
+
+    /* ── FLOATING HEARTS ────────────────────────────────────── */
+    #hearts {
+      position: fixed; inset: 0; z-index: 1;
+      pointer-events: none; overflow: hidden;
+    }
+    .fh {
+      position: absolute; bottom: -50px;
+      opacity: .9; user-select: none; pointer-events: none;
+      animation: floatUp linear infinite;
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(0)        rotate(0);   opacity: .85; }
+      100% { transform: translateY(-110vh)   rotate(360deg); opacity: 0; }
+    }
+
+    /* ── CARD ───────────────────────────────────────────────── */
+    .card {
+      background: var(--cbg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--gb);
+      border-radius: 28px;
+      padding: 40px 38px;
+      max-width: 560px; width: 100%;
+      box-shadow: var(--shadow);
+      text-align: center;
+      position: relative; z-index: 10;
+    }
+    .card::before {
+      content: '✦'; position: absolute; top: 14px; left: 18px;
+      color: var(--lp); font-size: .9rem; opacity: .5;
+    }
+    .card::after {
+      content: '✦'; position: absolute; bottom: 14px; right: 18px;
+      color: var(--lp); font-size: .7rem; opacity: .4;
+    }
+
+    /* ── TYPOGRAPHY ─────────────────────────────────────────── */
+    .script {
+      font-family: 'Dancing Script', cursive;
+      color: var(--rp);
+      font-size: clamp(1.6rem, 4vw, 2.1rem);
+      line-height: 1.35; margin-bottom: 14px;
+    }
+    .sub {
+      color: var(--tm);
+      font-size: .97rem; font-weight: 300;
+      line-height: 1.75; margin-bottom: 22px;
+    }
+    .emoji-bob {
+      font-size: 3rem; display: block; margin-bottom: 14px;
+      animation: bob 2.2s ease-in-out infinite;
+    }
+    @keyframes bob {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-9px); }
+    }
+
+    /* ── BUTTONS ────────────────────────────────────────────── */
+    .btn {
+      display: inline-block;
+      padding: 13px 34px; border-radius: 50px;
+      font-family: 'Poppins', sans-serif; font-size: .97rem; font-weight: 500;
+      cursor: pointer; border: none; outline: none;
+      transition: transform .25s, box-shadow .25s;
+      letter-spacing: .4px;
+    }
+    .btn-pink {
+      background: linear-gradient(135deg, #FF6B81, #FF8E9E);
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(255,107,129,.38);
+    }
+    .btn-pink:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(255,107,129,.50); }
+    .btn-pink:active { transform: translateY(-1px); }
+    .btn-ghost {
+      background: transparent; color: #bbb;
+      border: 2px solid #ddd;
+    }
+    .btn-ghost:hover { border-color: #ccc; color: #999; }
+    .btn-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── PROGRESS DOTS ──────────────────────────────────────── */
+    #dots {
+      position: fixed; top: 18px; left: 50%; transform: translateX(-50%);
+      display: none; gap: 8px; z-index: 9000; align-items: center;
+    }
+    .dot {
+      width: 8px; height: 8px; border-radius: 4px;
+      background: rgba(255,182,193,.45);
+      transition: all .35s;
+    }
+    .dot.on { background: var(--rp); width: 22px; }
+
+    /* ── CLICK HEARTS ───────────────────────────────────────── */
+    .ch {
+      position: fixed; pointer-events: none; z-index: 9998;
+      font-size: 22px;
+      animation: chAnim .9s ease forwards;
+    }
+    @keyframes chAnim {
+      0%   { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-70px) scale(.5); opacity: 0; }
+    }
+
+    /* ── CONFETTI ───────────────────────────────────────────── */
+    #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 997; }
+
+    /* ── MUSIC / DARK TOGGLES ───────────────────────────────── */
+    .fab {
+      position: fixed;
+      bottom: max(20px, calc(env(safe-area-inset-bottom, 0px) + 20px));
+      width: 50px; height: 50px; border-radius: 50%;
+      border: none; cursor: pointer; font-size: 1.25rem;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999; transition: transform .2s;
+    }
+    .fab:hover { transform: scale(1.1); }
+    #btn-music {
+      right: 20px;
+      background: linear-gradient(135deg, #FF6B81, #FF8E9E);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(255,107,129,.38);
+    }
+    #btn-dark {
+      left: 20px;
+      background: rgba(255,255,255,.28);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,182,193,.35);
+      color: var(--rp);
+    }
+
+    /* ── EASTER EGG MODAL ───────────────────────────────────── */
+    #easter {
+      position: fixed; inset: 0; z-index: 10000;
+      background: rgba(255,107,129,.45);
+      backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden;
+      transition: opacity .3s, visibility .3s;
+    }
+    #easter.show { opacity: 1; visibility: visible; }
+    .easter-card {
+      background: #fff; border-radius: 24px;
+      padding: 38px; max-width: 380px; width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(255,107,129,.30);
+      animation: popIn .4s ease;
+    }
+    @keyframes popIn {
+      from { transform: scale(.8); opacity: 0; }
+      to   { transform: scale(1);  opacity: 1; }
+    }
+
+    /* ── SCREEN 0 – LOADING ─────────────────────────────────── */
+    #s0 {
+      background: linear-gradient(135deg, #FF6B81, #FFB6C1);
+      z-index: 100;
+    }
+    .ld-heart { font-size: 64px; display: block; margin-bottom: 18px; animation: hb 1s ease-in-out infinite; }
+    @keyframes hb {
+      0%,100% { transform: scale(1);   }
+      50%      { transform: scale(1.2); }
+    }
+    .ld-text {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1.4rem, 4vw, 1.9rem); color: #fff;
+    }
+    .ld-dots span { animation: ldot 1.4s infinite; opacity: 0; }
+    .ld-dots span:nth-child(2) { animation-delay: .22s; }
+    .ld-dots span:nth-child(3) { animation-delay: .44s; }
+    @keyframes ldot { 0%,80%,100%{opacity:0} 40%{opacity:1} }
+    .ld-bar-wrap {
+      width: 200px; height: 4px; border-radius: 10px;
+      background: rgba(255,255,255,.28); margin: 22px auto 0; overflow: hidden;
+    }
+    .ld-bar {
+      height: 100%; background: #fff; border-radius: 10px;
+      width: 0; animation: lbar 2.6s ease-in-out forwards;
+    }
+    @keyframes lbar { to { width: 100%; } }
+
+    /* ── SCREEN 3 – TYPING ──────────────────────────────────── */
+    #typed-wrap {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1.15rem, 3vw, 1.4rem);
+      color: var(--td); line-height: 1.85;
+      min-height: 110px; margin-bottom: 10px;
+    }
+    .caret {
+      display: inline-block; width: 2px; height: 1.2em;
+      background: var(--rp); vertical-align: text-bottom; margin-left: 2px;
+      animation: blink .75s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    #s3-second { display: none; margin-top: 18px; }
+
+    /* ── SCREEN 4 – PROPOSAL ────────────────────────────────── */
+    .gif-wrap {
+      width: 190px; height: 190px; border-radius: 18px;
+      overflow: hidden; margin: 0 auto 22px;
+      box-shadow: 0 10px 30px rgba(255,107,129,.28);
+      background: linear-gradient(135deg, #FCE4EC, #E6E6FA);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .gif-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .gif-fallback { font-size: 5rem; animation: hb 1s ease-in-out infinite; }
+
+    #btn-no {
+      padding: 12px 30px; border-radius: 50px;
+      font-family: 'Poppins', sans-serif; font-size: .95rem;
+      cursor: pointer; border: 2px solid #ddd; background: transparent;
+      color: #bbb; transition: font-size .4s, opacity .5s;
+      white-space: nowrap;
+    }
+    #funny-msg {
+      min-height: 26px; margin-top: 10px;
+      font-size: .9rem; color: var(--rp); font-weight: 500;
+      font-family: 'Dancing Script', cursive; font-size: 1rem;
+    }
+
+    /* ── SCREEN 5 – DATE FORM ───────────────────────────────── */
+    .celebrate-ring {
+      width: 76px; height: 76px; border-radius: 50%;
+      background: linear-gradient(135deg, #FF6B81, #FFB6C1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.3rem; margin: 0 auto 18px;
+      animation: pulse 1.2s ease-in-out infinite;
+      box-shadow: 0 0 0 0 rgba(255,107,129,.4);
+    }
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0   rgba(255,107,129,.4); }
+      70%  { box-shadow: 0 0 0 18px rgba(255,107,129,0); }
+      100% { box-shadow: 0 0 0 0   rgba(255,107,129,0); }
+    }
+    .fg { margin-bottom: 18px; text-align: left; }
+    .fg label {
+      display: block; font-size: .85rem;
+      color: var(--tm); font-weight: 500; margin-bottom: 7px;
+    }
+    .fg input, .fg textarea {
+      width: 100%; padding: 11px 15px;
+      border: 2px solid var(--lp); border-radius: 12px;
+      /* 1rem = 16px — prevents iOS Safari from zooming in on input focus */
+      font-family: 'Poppins', sans-serif; font-size: 1rem;
+      color: var(--td); background: rgba(255,255,255,.65);
+      outline: none; transition: border-color .25s, box-shadow .25s;
+    }
+    .fg input:focus, .fg textarea:focus {
+      border-color: var(--rp);
+      box-shadow: 0 0 0 3px rgba(255,107,129,.13);
+    }
+    .dark .fg input, .dark .fg textarea {
+      background: rgba(255,255,255,.08); color: var(--td);
+    }
+    .fg textarea { resize: vertical; min-height: 74px; }
+    .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    /* ── SCREEN 6 – TICKET ──────────────────────────────────── */
+    #s6 {
+      overflow-y: auto;
+      padding: 44px 20px max(80px, calc(70px + env(safe-area-inset-bottom, 0px)));
+      align-items: flex-start; flex-direction: column;
+    }
+    .ticket {
+      background: #fff; border-radius: 22px;
+      max-width: 370px; width: 100%;
+      box-shadow: 0 20px 60px rgba(255,107,129,.28);
+      overflow: hidden; margin: 0 auto;
+    }
+    .ticket-hd {
+      background: linear-gradient(135deg, #FF6B81, #FF8E9E, #FFB6C1);
+      padding: 28px 24px; text-align: center; color: #fff;
+    }
+    .ticket-hd .script { color: #fff; font-size: 1.9rem; margin-bottom: 6px; }
+    .ticket-hd p { opacity: .9; font-size: .85rem; }
+    .ticket-bd { padding: 22px 24px; }
+    .t-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+    .t-icon { font-size: 1.25rem; width: 32px; text-align: center; flex-shrink: 0; }
+    .t-lbl { font-size: .72rem; color: #b0b0b0; text-transform: uppercase; letter-spacing: 1px; }
+    .t-val { font-size: .97rem; font-weight: 600; color: #4a2040; word-break: break-word; }
+    .t-sep {
+      border: none; border-top: 2px dashed #FFB6C1;
+      margin: 18px 0;
+    }
+    .t-code {
+      background: linear-gradient(135deg, #FCE4EC, #E6E6FA);
+      border-radius: 12px; padding: 14px; text-align: center;
+    }
+    .t-code-lbl { font-size: .72rem; color: #b0b0b0; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 7px; }
+    .t-code-val {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.9rem; color: var(--rp); font-weight: 700;
+    }
+    #qrc { display: flex; justify-content: center; margin-top: 16px; }
+    #qrc canvas, #qrc img { border-radius: 8px; }
+    #s6-btn { text-align: center; margin-top: 22px; width: 100%; }
+
+    /* ── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 520px) {
+      .card { padding: 28px 22px; }
+      .frow { grid-template-columns: 1fr; }
+      .gif-wrap { width: 155px; height: 155px; }
+    }
+
+    /* extra-small phones (e.g. Galaxy A, iPhone SE) */
+    @media (max-width: 380px) {
+      .card { padding: 22px 16px; }
+      .script { font-size: 1.4rem; }
+      .emoji-bob { font-size: 2.5rem; margin-bottom: 10px; }
+    }
+
+    /* short-screen / landscape phones */
+    @media (max-height: 680px) {
+      .card { padding: 20px 24px; }
+      .emoji-bob { font-size: 2rem; margin-bottom: 8px; }
+      .gif-wrap { width: 130px; height: 130px; margin-bottom: 14px; }
+      .celebrate-ring { width: 58px; height: 58px; font-size: 1.7rem; margin-bottom: 10px; }
+      .sub { margin-bottom: 12px; line-height: 1.55; }
+      #typed-wrap { min-height: 80px; }
+    }
+
+    /* Loading screen ignores the shared padding-bottom rule */
+    #s0 { padding-bottom: 20px; }
+  </style>
+</head>
+
+<body>
+  <!-- Background layer -->
+  <div id="bg"></div>
+
+  <!-- Floating hearts -->
+  <div id="hearts"></div>
+
+  <!-- Confetti canvas -->
+  <canvas id="confetti"></canvas>
+
+  <!-- Progress dots -->
+  <div id="dots" style="display:none;">
+    <div class="dot" id="d1"></div>
+    <div class="dot" id="d2"></div>
+    <div class="dot" id="d3"></div>
+    <div class="dot" id="d4"></div>
+    <div class="dot" id="d5"></div>
+    <div class="dot" id="d6"></div>
+    <div class="dot" id="d7"></div>
+  </div>
+
+  <!-- FABs -->
+  <button class="fab" id="btn-music" title="Muzică">🎵</button>
+  <button class="fab" id="btn-dark"  title="Mod întunecat">🌙</button>
+
+  <!-- Easter egg modal -->
+  <div id="easter">
+    <div class="easter-card">
+      <span style="font-size:3rem;display:block;margin-bottom:12px;animation:bob 2s ease-in-out infinite">😍</span>
+      <div class="script">Shhh... 🤫</div>
+      <p style="color:#7a4060;font-size:1.05rem;margin:14px 0 22px">Știai că deja sper să spui DA? ❤️</p>
+      <button class="btn btn-pink" onclick="closeEaster()">Adorabil! 😊</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════
+       SCREEN 0 – LOADING
+  ════════════════════════════════════════════════════ -->
+  <div class="screen visible shown" id="s0" style="background:linear-gradient(135deg,#FF6B81,#FFB6C1);z-index:100;">
+    <div style="text-align:center">
+      <span class="ld-heart">❤️</span>
+      <div class="ld-text">
+        Pregătesc o surpriză pentru tine
+        <span class="ld-dots"><span>.</span><span>.</span><span>.</span></span>
+      </div>
+      <div class="ld-bar-wrap"><div class="ld-bar"></div></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════
+       SCREEN 1 – WELCOME
+  ════════════════════════════════════════════════════ -->
+  <div class="screen" id="s1">
+    <div class="card">
+      <span class="emoji-bob">💌</span>
+      <div class="script" id="easter-title" style="cursor:pointer">
+        Am pregătit ceva special pentru tine ❤️
+      </div>
+      <p class="sub">Promit că durează doar câteva secunde.</p>
+      <button class="btn btn-pink" onclick="go(2)">Deschide surpriza ✨</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════
+       SCREEN 2 – CUTE QUESTION
+  ════════════════════════════════════════════════════ -->
+  <div class="screen" id="s2">
+    <div class="card">
+      <span class="emoji-bob">😊</span>
+      <div class="script">Crezi că meriți o surpriză frumoasă astăzi? 😊</div>
+      <p class="sub" style="margin-bottom:26px">Gândește-te bine... 🤍</p>
+      <div class="btn-row">
+        <button class="btn btn-pink" onclick="answerYes(this)">Da 🥰</button>
+        <button class="btn btn-pink" onclick="answerYes(this)" style="background:linear-gradient(135deg,#FFB6C1,#FF8E9E)">Absolut da ✨</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════
+       SCREEN 3 – ROMANTIC MESSAGE
+  ════════════════════════════════════════════════════ -->
+  <div class="screen" id="s3">
+    <div class="card">
+      <span class="emoji-bob">🌹</span>
+      <div id="typed-wrap">
+        <span id="typed"></span><span class="caret" id="caret"></span>
+      </div>
+      <div id="s3-second">
+        <p class="sub" style="font-style:italic">Și exact de aceea am o întrebare pentru tine... ❤️</p>
+        <button class="btn btn-pink" onclick="go(4)" style="margin-top:14px">Continuă ➜</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════
+       SCREEN 4 – MAIN PROPOSAL
+  ════════════════════════════════════════════════════ -->
+  <div class="screen" id="s4">
+    <div class="card" style="max-width:580px">
+      <div class="gif-wrap" id="gif-wrap">
+        <img
+          src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif"
+          alt="love"
+          onerror="this.style.display='none';document.getElementById('gif-fb').style.display='block'"
+        />
+        <span class="gif-fallback" id="gif-fb" style="display:none">🐻</span>
+      </div>
+      <div class="script">Ai vrea să ieși cu mine la o cină romantică? ❤️</div>
+      <p class="sub">Te rog, gândește-te bine... 🥺</p>
+      <div class="btn-row" id="prop-btns">
+        <button class="btn btn-pink" id="btn-yes" onclick="sayYes()">Da ❤️</button>
+        <!-- onmouseenter covers desktop; ontouchstart covers mobile (preventDefault stops the follow-up click) -->
+        <button id="btn-no" onmouseenter="runAway()" ontouchstart="runAway(event)">Nu 😅</button>
+      </div>
+      <div id="funny-msg"></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════
+       SCREEN 5 – DATE SELECTION
+  ════════════════════════════════════════════════════ -->
+  <div class="screen" id="s5">
+    <div class="card">
+      <div class="celebrate-ring">🎉</div>
+      <div class="script">Yeeey! ❤️</div>
+      <p class="sub">Acum spune-mi când ești liberă.</p>
+      <form id="date-form" onsubmit="confirmDate(event)">
+        <div class="frow">
+          <div class="fg">
+            <label>📅 Data</label>
+            <input type="date" id="inp-date" required />
+          </div>
+          <div class="fg">
+            <label>⏰ Ora</label>
+            <input type="time" id="inp-time" required />
+          </div>
+        </div>
+        <div class="fg">
+          <label>💬 Notă (opțional)</label>
+          <textarea id="inp-note" placeholder="Ex: după facultate, după serviciu etc."></textarea>
+        </div>
+        <button type="submit" class="btn btn-pink" style="width:100%;padding:15px">Confirmă întâlnirea ❤️</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════
+       SCREEN 6 – DIGITAL TICKET
+  ════════════════════════════════════════════════════ -->
+  <div class="screen" id="s6">
+    <div class="ticket" id="ticket">
+      <div class="ticket-hd">
+        <div style="font-size:2.2rem;margin-bottom:8px">🎫</div>
+        <div class="script">Invitație Confirmată ❤️</div>
+        <p>O seară de neuitat te așteaptă</p>
+      </div>
+      <div class="ticket-bd">
+        <div class="t-row">
+          <span class="t-icon">📅</span>
+          <div><div class="t-lbl">Data</div><div class="t-val" id="t-date">—</div></div>
+        </div>
+        <div class="t-row">
+          <span class="t-icon">⏰</span>
+          <div><div class="t-lbl">Ora</div><div class="t-val" id="t-time">—</div></div>
+        </div>
+        <div class="t-row" id="t-note-row">
+          <span class="t-icon">💬</span>
+          <div><div class="t-lbl">Notă</div><div class="t-val" id="t-note">—</div></div>
+        </div>
+        <hr class="t-sep" />
+        <div class="t-code">
+          <div class="t-code-lbl">Cod Unic</div>
+          <div class="t-code-val" id="t-code">—</div>
+        </div>
+        <div id="qrc"></div>
+      </div>
+    </div>
+    <div id="s6-btn">
+      <button class="btn btn-pink" onclick="go(7)" style="margin-top:0">Continuă ➜</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════
+       SCREEN 7 – FINAL MESSAGE
+  ════════════════════════════════════════════════════ -->
+  <div class="screen" id="s7">
+    <div class="card">
+      <span class="emoji-bob" style="font-size:3.8rem">🌹</span>
+      <div class="script" style="font-size:clamp(1.5rem,4vw,2rem)">
+        Abia aștept să petrecem timpul împreună ❤️
+      </div>
+      <p class="sub">
+        Promit conversații interesante, zâmbete sincere și o seară frumoasă.
+      </p>
+      <p class="sub" style="font-size:.85rem;margin-bottom:26px">
+        Până atunci... gândul meu e la tine 🌸
+      </p>
+      <button class="btn btn-pink" id="final-btn" onclick="finalSend()">Trimite răspunsul 💌</button>
+      <div id="final-ok" style="display:none;margin-top:18px">
+        <span style="font-family:'Dancing Script',cursive;font-size:1.4rem;color:var(--rp)">
+          ❤️ Ne vedem în curând! ❤️
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════
+       JAVASCRIPT
+  ════════════════════════════════════════════════════ -->
+  <script>
+    // ─────────────────────────────────────────────────────
+    //  STATE
+    // ─────────────────────────────────────────────────────
+    let current   = 0;
+    let noCount   = 0;
+    let easterHits = 0;
+    let music     = false;
+    let actx      = null;
+    let masterGain = null;
+    let loopTimer = null;
+
+    // ─────────────────────────────────────────────────────
+    //  BOOT
+    // ─────────────────────────────────────────────────────
+    window.addEventListener('load', () => {
+      spawnHearts();
+      document.addEventListener('click', onBodyClick);
+      document.getElementById('btn-music').addEventListener('click', toggleMusic);
+      document.getElementById('btn-dark').addEventListener('click', toggleDark);
+      document.getElementById('easter-title').addEventListener('click', easterClick);
+      document.getElementById('easter').addEventListener('click', function(e){
+        if (e.target === this) closeEaster();
+      });
+
+      // Dark mode: auto from OS preference
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+        document.getElementById('btn-dark').textContent = '☀️';
+      }
+
+      setTimeout(() => go(1), 2900);
+    });
+
+    // ─────────────────────────────────────────────────────
+    //  SCREEN NAVIGATION
+    // ─────────────────────────────────────────────────────
+    function go(n) {
+      // fade out current
+      const prev = document.getElementById('s' + current);
+      if (prev) {
+        prev.style.opacity = '0';
+        setTimeout(() => { prev.classList.remove('visible', 'shown'); }, 520);
+      }
+
+      setTimeout(() => {
+        current = n;
+
+        // show dots from screen 1 onward
+        const dots = document.getElementById('dots');
+        dots.style.display = (n >= 1) ? 'flex' : 'none';
+        updateDots(n);
+
+        const next = document.getElementById('s' + n);
+        if (!next) return;
+        next.classList.add('visible');
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          next.style.transition = 'opacity .55s ease';
+          next.classList.add('shown');
+        }));
+
+        onEnter(n);
+      }, 480);
+    }
+
+    function onEnter(n) {
+      if (n === 3) startTyping();
+      if (n === 5) launchConfetti();
+    }
+
+    function updateDots(n) {
+      for (let i = 1; i <= 7; i++) {
+        const d = document.getElementById('d' + i);
+        if (d) d.classList.toggle('on', i === n);
+      }
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  FLOATING HEARTS (background)
+    // ─────────────────────────────────────────────────────
+    const HEART_EMOJIS = ['❤️','🩷','💕','💗','💖','💝','🌸','✨','💞','🌷'];
+
+    function spawnHearts() {
+      function make() {
+        const h = document.createElement('div');
+        h.className = 'fh';
+        h.textContent = HEART_EMOJIS[Math.floor(Math.random() * HEART_EMOJIS.length)];
+        h.style.left = Math.random() * 100 + '%';
+        h.style.fontSize = (Math.random() * 14 + 11) + 'px';
+        const dur = (Math.random() * 7 + 6) + 's';
+        h.style.animationDuration = dur;
+        h.style.animationDelay = (Math.random() * 1.5) + 's';
+        document.getElementById('hearts').appendChild(h);
+        setTimeout(() => h.remove(), 13500);
+      }
+      const onMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+      const initialCount = onMobile ? 6 : 10;
+      const spawnInterval = onMobile ? 950 : 550;
+      for (let i = 0; i < initialCount; i++) setTimeout(make, i * 180);
+      setInterval(make, spawnInterval);
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  CLICK-TO-SPAWN HEARTS
+    // ─────────────────────────────────────────────────────
+    function onBodyClick(e) {
+      const tag = e.target.tagName.toLowerCase();
+      if (['button','input','textarea','label','a'].includes(tag)) return;
+      spawnClickHeart(e.clientX, e.clientY);
+    }
+
+    function spawnClickHeart(x, y) {
+      const h = document.createElement('div');
+      h.className = 'ch';
+      h.textContent = HEART_EMOJIS[Math.floor(Math.random() * 5)];
+      h.style.left = (x - 11) + 'px';
+      h.style.top  = (y - 11) + 'px';
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 900);
+    }
+
+    function burstHearts(cx, cy, count) {
+      for (let i = 0; i < count; i++) {
+        setTimeout(() => spawnClickHeart(
+          cx + (Math.random() - .5) * 80,
+          cy + (Math.random() - .5) * 80
+        ), i * 70);
+      }
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  SCREEN 2 – CUTE QUESTION
+    // ─────────────────────────────────────────────────────
+    function answerYes(btn) {
+      const r = btn.getBoundingClientRect();
+      burstHearts(r.left + r.width/2, r.top + r.height/2, 7);
+      setTimeout(() => go(3), 450);
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  SCREEN 3 – TYPING ANIMATION
+    // ─────────────────────────────────────────────────────
+    function startTyping() {
+      const TEXT = 'În ultima perioadă mi-am dat seama că momentele frumoase sunt și mai speciale atunci când sunt împărțite cu persoana potrivită.';
+      const el    = document.getElementById('typed');
+      const caret = document.getElementById('caret');
+      const sec   = document.getElementById('s3-second');
+
+      el.textContent = '';
+      sec.style.display = 'none';
+      let i = 0;
+
+      function type() {
+        if (i < TEXT.length) {
+          el.textContent += TEXT[i++];
+          setTimeout(type, 42 + Math.random() * 28);
+        } else {
+          caret.style.display = 'none';
+          setTimeout(() => {
+            sec.style.display = 'block';
+            sec.style.animation = 'none';
+            sec.style.opacity = 0;
+            requestAnimationFrame(() => {
+              sec.style.transition = 'opacity .5s';
+              sec.style.opacity = 1;
+            });
+          }, 550);
+        }
+      }
+      setTimeout(type, 400);
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  SCREEN 4 – NO BUTTON
+    // ─────────────────────────────────────────────────────
+    const FUNNY = [
+      'Ești sigură? 🥺',
+      'Mai gândește-te puțin ❤️',
+      'Refuzul nu este în baza de date 😆',
+      'Încă o șansă? 🌹',
+      'Nu e o opțiune validă 😅',
+      'Tastatura ta a greșit 🤭',
+      'Încearcă butonul roz! ❤️',
+      'Chiar ești sigură?? 🙈'
+    ];
+
+    function runAway(e) {
+      // on touch devices, prevent the follow-up click event from firing twice
+      if (e && e.cancelable && e.type === 'touchstart') e.preventDefault();
+      const btn = document.getElementById('btn-no');
+      if (!btn || btn.style.display === 'none') return;
+
+      noCount++;
+
+      // show funny message
+      document.getElementById('funny-msg').textContent =
+        FUNNY[Math.min(noCount - 1, FUNNY.length - 1)];
+
+      // switch to fixed positioning and move
+      const bw = btn.offsetWidth || 110;
+      const bh = btn.offsetHeight || 46;
+      const pad = 30;
+      const maxX = window.innerWidth  - bw - pad;
+      const maxY = window.innerHeight - bh - pad;
+      const x = pad + Math.random() * maxX;
+      const y = pad + Math.random() * maxY;
+
+      btn.style.position = 'fixed';
+      btn.style.zIndex   = '9996';
+      btn.style.margin   = '0';
+      btn.style.left     = x + 'px';
+      btn.style.top      = y + 'px';
+
+      // shrink gradually
+      if (noCount >= 4) {
+        const scale = Math.max(0.25, 1 - (noCount - 3) * 0.14);
+        btn.style.transform = 'scale(' + scale + ')';
+      }
+
+      // disappear after enough escapes
+      if (noCount >= 9) {
+        btn.style.transition = 'opacity .5s';
+        btn.style.opacity = '0';
+        setTimeout(() => {
+          btn.style.display = 'none';
+          document.getElementById('funny-msg').textContent = 'Mă bucur că ai ales înțelept! 😍';
+        }, 500);
+      }
+    }
+
+    function sayYes() {
+      const btn = document.getElementById('btn-no');
+      if (btn) btn.style.display = 'none';
+
+      const yes = document.getElementById('btn-yes');
+      const r = yes.getBoundingClientRect();
+      burstHearts(r.left + r.width/2, r.top + r.height/2, 14);
+
+      setTimeout(() => go(5), 550);
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  CONFETTI
+    // ─────────────────────────────────────────────────────
+    function launchConfetti() {
+      const canvas = document.getElementById('confetti');
+      const ctx    = canvas.getContext('2d');
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const cols = ['#FF6B81','#FFB6C1','#E6E6FA','#FF8E9E','#FFF0F5','#FF4757','#FFCDD2','#fff'];
+      const isMob = window.innerWidth <= 520;
+      const pieces = Array.from({ length: isMob ? 60 : 130 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        w: Math.random() * 9 + 4,
+        h: Math.random() * 5 + 3,
+        c: cols[Math.floor(Math.random() * cols.length)],
+        a: Math.random() * 360,
+        s: Math.random() * 3 + 1.8,
+        spin: Math.random() * 8 - 4,
+        heart: Math.random() > .72
+      }));
+
+      let start = performance.now();
+
+      function draw(now) {
+        if (now - start > 5200) { ctx.clearRect(0,0,canvas.width,canvas.height); return; }
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        pieces.forEach(p => {
+          p.y += p.s;
+          p.a += p.spin;
+          if (p.y > canvas.height) { p.y = -18; p.x = Math.random() * canvas.width; }
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.a * Math.PI / 180);
+          ctx.fillStyle = p.c;
+          if (p.heart) {
+            ctx.font = (p.w * 2) + 'px serif';
+            ctx.fillText('❤️', -p.w, p.h);
+          } else {
+            ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+          }
+          ctx.restore();
+        });
+        requestAnimationFrame(draw);
+      }
+      requestAnimationFrame(draw);
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  SCREEN 5 – DATE FORM
+    // ─────────────────────────────────────────────────────
+    function confirmDate(e) {
+      e.preventDefault();
+      const dateVal = document.getElementById('inp-date').value;
+      const timeVal = document.getElementById('inp-time').value;
+      const noteVal = document.getElementById('inp-note').value.trim();
+
+      if (!dateVal || !timeVal) return;
+
+      const dateObj = new Date(dateVal + 'T' + timeVal);
+      const fmtDate = dateObj.toLocaleDateString('ro-RO', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+
+      // generate unique code
+      const CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let code = 'DATE-';
+      for (let i = 0; i < 6; i++) code += CHARS[Math.floor(Math.random() * CHARS.length)];
+
+      // populate ticket
+      document.getElementById('t-date').textContent = fmtDate;
+      document.getElementById('t-time').textContent = timeVal;
+      document.getElementById('t-code').textContent = code;
+
+      const noteRow = document.getElementById('t-note-row');
+      if (noteVal) {
+        document.getElementById('t-note').textContent = noteVal;
+        noteRow.style.display = 'flex';
+      } else {
+        noteRow.style.display = 'none';
+      }
+
+      // QR code
+      const qrc = document.getElementById('qrc');
+      qrc.innerHTML = '';
+      try {
+        new QRCode(qrc, {
+          text: 'DATE INVITATION\nCod: ' + code + '\nData: ' + fmtDate + '\nOra: ' + timeVal,
+          width: 128, height: 128,
+          colorDark: '#FF6B81', colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.M
+        });
+      } catch (_) {
+        qrc.innerHTML = '<div style="padding:12px;background:#FCE4EC;border-radius:8px;color:var(--rp);font-size:.85rem">❤️ ' + code + ' ❤️</div>';
+      }
+
+      go(6);
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  SCREEN 7 – FINAL
+    // ─────────────────────────────────────────────────────
+    function finalSend() {
+      const btn = document.getElementById('final-btn');
+      btn.textContent = 'Trimis! ❤️';
+      btn.disabled = true; btn.style.opacity = '.75';
+
+      document.getElementById('final-ok').style.display = 'block';
+      launchConfetti();
+      for (let i = 0; i < 22; i++) {
+        setTimeout(() => spawnClickHeart(
+          Math.random() * window.innerWidth,
+          Math.random() * window.innerHeight
+        ), i * 90);
+      }
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  MUSIC (Web Audio API – gentle ambient melody)
+    // ─────────────────────────────────────────────────────
+    const MELODY_NOTES = [
+      523.25, 587.33, 659.25, 698.46, 783.99, 880.00, 987.77,
+      1046.50, 783.99, 698.46, 659.25, 587.33, 523.25, 587.33
+    ];
+
+    function toggleMusic() {
+      const btn = document.getElementById('btn-music');
+      if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+
+      if (music) {
+        stopMusic();
+        btn.textContent = '🎵';
+      } else {
+        startMusic();
+        btn.textContent = '🔇';
+      }
+      music = !music;
+    }
+
+    function startMusic() {
+      masterGain = actx.createGain();
+      masterGain.gain.setValueAtTime(0, actx.currentTime);
+      masterGain.gain.linearRampToValueAtTime(.06, actx.currentTime + 1);
+      masterGain.connect(actx.destination);
+      scheduleMelody();
+    }
+
+    function stopMusic() {
+      if (masterGain) {
+        masterGain.gain.setTargetAtTime(0, actx.currentTime, .4);
+        setTimeout(() => { try { masterGain.disconnect(); } catch(_){} masterGain = null; }, 900);
+      }
+      clearTimeout(loopTimer);
+    }
+
+    function scheduleMelody() {
+      if (!music && masterGain) return;
+      const noteLen = .55;
+      let t = actx.currentTime + .05;
+
+      MELODY_NOTES.forEach((freq, i) => {
+        const osc  = actx.createOscillator();
+        const gain = actx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = freq * .5;
+        gain.gain.setValueAtTime(0, t + i * noteLen);
+        gain.gain.linearRampToValueAtTime(.55, t + i * noteLen + .04);
+        gain.gain.setTargetAtTime(0, t + i * noteLen + noteLen * .55, .08);
+        osc.connect(gain);
+        gain.connect(masterGain);
+        osc.start(t + i * noteLen);
+        osc.stop(t + i * noteLen + noteLen);
+      });
+
+      const total = MELODY_NOTES.length * noteLen * 1000;
+      loopTimer = setTimeout(() => { if (music) scheduleMelody(); }, total - 200);
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  DARK MODE
+    // ─────────────────────────────────────────────────────
+    function toggleDark() {
+      document.body.classList.toggle('dark');
+      document.getElementById('btn-dark').textContent =
+        document.body.classList.contains('dark') ? '☀️' : '🌙';
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  EASTER EGG
+    // ─────────────────────────────────────────────────────
+    function easterClick() {
+      easterHits++;
+      if (easterHits >= 5) {
+        easterHits = 0;
+        document.getElementById('easter').classList.add('show');
+      }
+    }
+
+    function closeEaster() {
+      document.getElementById('easter').classList.remove('show');
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  RESIZE
+    // ─────────────────────────────────────────────────────
+    window.addEventListener('resize', () => {
+      const c = document.getElementById('confetti');
+      c.width  = window.innerWidth;
+      c.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
