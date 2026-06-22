@@ -647,7 +647,7 @@
     //  BOOT
     // ─────────────────────────────────────────────────────
     window.addEventListener('load', () => {
-      emailjs.init(EJS_PUBLIC_KEY);
+      emailjs.init({ publicKey: EJS_PUBLIC_KEY });
 
       spawnHearts();
       document.addEventListener('click', onBodyClick);
@@ -1008,11 +1008,13 @@
       })
       .catch(err => {
         console.error('EmailJS error:', err);
-        btn.textContent  = 'Încearcă din nou 🔁';
-        btn.disabled     = false;
+        const detail = (err && (err.text || err.message || JSON.stringify(err))) || 'eroare necunoscută';
+        btn.textContent   = 'Încearcă din nou 🔁';
+        btn.disabled      = false;
         btn.style.opacity = '1';
-        okEl.innerHTML   =
-          '<span style="color:#e57373;font-size:.9rem">⚠️ Trimiterea a eșuat. Verifică configurația EmailJS.</span>';
+        okEl.innerHTML    =
+          '<span style="color:#e57373;font-size:.85rem">⚠️ Eroare: ' +
+          detail + '</span>';
         okEl.style.display = 'block';
       });
     }
