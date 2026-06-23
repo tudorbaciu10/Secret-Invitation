@@ -7,10 +7,12 @@ O aplicație web single-page pentru a trimite o invitație la o cină romantică
 ## Flux utilizator
 
 ```
-[Loading] → [Welcome] → [Întrebare haioasă] → [Mesaj romantic] → [Propunere] → [Formular dată] → [Ticket digital] → [Mesaj final + email]
+[Loading] → [Welcome] → [Istoria noastră] → [Întrebare haioasă] → [Mesaj romantic] → [Propunere] → [Formular dată] → [Ticket digital] → [Mesaj final + email]
 ```
 
-7 ecrane conectate prin tranziții fade. Progress dots în header indică poziția curentă.
+8 ecrane conectate prin tranziții fade. Progress dots în header indică poziția curentă.
+
+> **Tot conținutul editabil se află într-un singur loc:** obiectul `CONFIG` din `<script>` (sus în [index.html](index.html)). Pentru o ocazie nouă (cerere în căsătorie, aniversare etc.) modifici doar textele de acolo — codul rămâne neschimbat.
 
 ---
 
@@ -18,13 +20,14 @@ O aplicație web single-page pentru a trimite o invitație la o cină romantică
 
 | Funcție | Detalii |
 |---|---|
-| **Loading screen** | Animație heartbeat + bară de progres, 2.9s |
-| **Ecran 2 – Întrebare** | Ambele butoane conduc la DA (nu există opțiune de refuz) |
-| **Ecran 3 – Typing** | Text scris caracter cu caracter (~42ms/char + jitter) |
-| **Ecran 4 – Propunere** | Butonul „Nu" fuge la hover/touch, se micșorează treptat, dispare după 9 încercări |
-| **Ecran 5 – Formular** | Data + ora (required) + notă (opțional) |
-| **Ecran 6 – Ticket** | Cod unic `DATE-XXXXXX`, QR code colorat (roz) via qrcodejs |
-| **Ecran 7 – Final** | Trimite email cu datele întâlnirii via EmailJS |
+| **Loading screen** | Animație heartbeat + bară de progres (durată din `CONFIG.loading`) |
+| **Ecran 2 – Istoria noastră** | Timeline cu poze (din `poze/`) + GIF-uri cu reacții pozitive, generat din `CONFIG.story.timeline` |
+| **Ecran 3 – Întrebare** | Ambele butoane conduc la DA (nu există opțiune de refuz) |
+| **Ecran 4 – Typing** | Text scris caracter cu caracter (~42ms/char + jitter) |
+| **Ecran 5 – Propunere** | Butonul „Nu" fuge la hover/touch, se micșorează treptat, dispare după 9 încercări |
+| **Ecran 6 – Formular** | Data + ora (required) + notă (opțional) |
+| **Ecran 7 – Ticket** | Cod unic `DATE-XXXXXX`, QR code colorat (roz) via qrcodejs |
+| **Ecran 8 – Final** | Trimite email cu datele întâlnirii via EmailJS |
 | **Inimi flotante** | Background animat, densitate adaptată mobile/desktop |
 | **Inimi la click** | Spawn pe orice click în afara butoanelor |
 | **Confetti** | Canvas animat la confirmarea datei și la trimiterea emailului |
@@ -53,44 +56,57 @@ To Email: {{to_email}}
 ```
 
 4. **Account → General** → copiază `Public Key`
-5. Înlocuiește în `index.html` (secțiunea CONFIG, sus în `<script>`):
+5. Înlocuiește în `index.html`, în obiectul `CONFIG.email` (sus în `<script>`):
 
 ```js
-const EJS_PUBLIC_KEY  = 'cheia_ta_publica';
-const EJS_SERVICE_ID  = 'service_xxxxxxx';
-const EJS_TEMPLATE_ID = 'template_xxxxxxx';
-const RECIPIENT_EMAIL = 'emailul_tau@gmail.com';
+email: {
+  publicKey:  'cheia_ta_publica',
+  serviceId:  'service_xxxxxxx',
+  templateId: 'template_xxxxxxx',
+  recipient:  'emailul_tau@gmail.com'   // ← de înlocuit
+}
 ```
 
-### Valori curente (commit inițial)
+---
 
-```js
-EJS_PUBLIC_KEY  = 'CbnYGvZz_5AWYSaj1'
-EJS_SERVICE_ID  = 'service_52vcnsl'
-EJS_TEMPLATE_ID = 'template_iwqddre'
-RECIPIENT_EMAIL = 'your@email.com'   // ← de înlocuit
-```
+## Poze (`poze/`)
+
+Salvează pozele în folderul `poze/`, denumite `1.jpg` … `10.jpg`. Sunt referențiate din `CONFIG.story.timeline` (câmpul `photo`). Dacă o poză lipsește, pe site apare automat un placeholder roz cu 🌸. Vezi [poze/README.txt](poze/README.txt) pentru maparea sugerată.
+
+---
+
+## Personalizare pentru o ocazie nouă
+
+Totul se editează din obiectul `CONFIG` (sus în `<script>`). Pentru a transforma invitația în altă ocazie (cerere în căsătorie, aniversare, Valentine):
+
+1. Schimbă textele din `welcome`, `question`, `message`, `proposal`, `final`.
+2. Editează `story.timeline` (date, titluri, texte, poze, GIF-uri).
+3. Schimbă GIF-urile din `CONFIG.gifs` (orice link `.gif`).
+4. Ajustează `ticket.codePrefix` și `email`.
+
+Nicio altă modificare de cod nu este necesară — logica citește totul din `CONFIG`.
 
 ---
 
 ## Structură tehnică
 
 ```
-index.html          (1156 linii — tot proiectul într-un singur fișier)
+index.html          (tot proiectul într-un singur fișier)
 ├── <head>
 │   ├── Google Fonts: Dancing Script + Poppins
 │   ├── qrcodejs (CDN) — generare QR code
 │   ├── EmailJS browser SDK v4 (CDN)
-│   └── <style> (~400 linii CSS + animații)
+│   └── <style> (CSS + animații + stiluri timeline)
 └── <body>
     ├── #bg          — gradient background fix
     ├── #hearts      — container inimi flotante
     ├── #confetti    — canvas animație
-    ├── #dots        — progress indicator (7 puncte)
+    ├── #dots        — progress indicator (8 puncte)
     ├── .fab × 2     — butoane muzică + dark mode
     ├── #easter      — modal easter egg
-    ├── #s0 – #s7    — cele 8 ecrane
-    └── <script>     — toată logica JS
+    ├── #s0 – #s8    — cele 9 ecrane (loading + 8 conținut)
+    └── <script>     — obiectul CONFIG + toată logica JS
+poze/               — pozele tale (1.jpg … 10.jpg)
 ```
 
 ### Dependențe externe (CDN)

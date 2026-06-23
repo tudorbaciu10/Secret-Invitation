@@ -265,7 +265,81 @@
     }
     @keyframes lbar { to { width: 100%; } }
 
-    /* ── SCREEN 3 – TYPING ──────────────────────────────────── */
+    /* ── SCREEN 2 – STORY TIMELINE ──────────────────────────── */
+    #s2 {
+      align-items: center;
+      padding: 44px 20px max(80px, calc(70px + env(safe-area-inset-bottom, 0px)));
+    }
+    .story-wrap { max-width: 560px; width: 100%; margin: auto; }
+    .story-head {
+      text-align: center; margin-bottom: 8px;
+    }
+    .story-intro {
+      text-align: center; color: var(--tm);
+      font-size: .95rem; font-weight: 300; line-height: 1.7;
+      margin-bottom: 28px; font-style: italic;
+    }
+    .timeline {
+      position: relative;
+      padding-left: 26px;
+      margin-bottom: 26px;
+    }
+    /* vertical line */
+    .timeline::before {
+      content: ''; position: absolute;
+      left: 7px; top: 6px; bottom: 6px; width: 2px;
+      background: linear-gradient(var(--lp), var(--rp), var(--lp));
+      border-radius: 2px;
+    }
+    .tl-item {
+      position: relative;
+      background: var(--cbg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--gb);
+      border-radius: 20px;
+      padding: 18px 18px 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(255,107,129,.14);
+    }
+    /* node on the line */
+    .tl-item::before {
+      content: '❤'; position: absolute;
+      left: -26px; top: 18px;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--rp); color: #fff;
+      font-size: 9px; line-height: 18px; text-align: center;
+      box-shadow: 0 0 0 4px var(--spbg);
+    }
+    .tl-date {
+      font-size: .72rem; letter-spacing: 1px; text-transform: uppercase;
+      color: var(--rp); font-weight: 600; margin-bottom: 4px;
+    }
+    .tl-title {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.5rem; color: var(--td); line-height: 1.2; margin-bottom: 8px;
+    }
+    .tl-text {
+      color: var(--tm); font-size: .92rem; font-weight: 300; line-height: 1.65;
+    }
+    .tl-photo {
+      width: 100%; border-radius: 14px; margin-top: 14px;
+      display: block; box-shadow: 0 8px 22px rgba(255,107,129,.20);
+      object-fit: cover; max-height: 340px;
+    }
+    .tl-photo-fallback {
+      width: 100%; border-radius: 14px; margin-top: 14px;
+      background: linear-gradient(135deg, #FCE4EC, #E6E6FA);
+      display: flex; align-items: center; justify-content: center;
+      height: 150px; font-size: 3rem;
+    }
+    .tl-gif {
+      width: 140px; height: 140px; border-radius: 14px; margin: 14px auto 0;
+      display: block; object-fit: cover;
+      box-shadow: 0 8px 22px rgba(255,107,129,.20);
+    }
+
+    /* ── SCREEN 4 – TYPING ──────────────────────────────────── */
     #typed-wrap {
       font-family: 'Dancing Script', cursive;
       font-size: clamp(1.15rem, 3vw, 1.4rem);
@@ -278,9 +352,9 @@
       animation: blink .75s step-end infinite;
     }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-    #s3-second { display: none; margin-top: 18px; }
+    #s4-second { display: none; margin-top: 18px; }
 
-    /* ── SCREEN 4 – PROPOSAL ────────────────────────────────── */
+    /* ── SCREEN 5 – PROPOSAL ────────────────────────────────── */
     .gif-wrap {
       width: 190px; height: 190px; border-radius: 18px;
       overflow: hidden; margin: 0 auto 22px;
@@ -304,7 +378,7 @@
       font-family: 'Dancing Script', cursive; font-size: 1rem;
     }
 
-    /* ── SCREEN 5 – DATE FORM ───────────────────────────────── */
+    /* ── SCREEN 6 – DATE FORM ───────────────────────────────── */
     .celebrate-ring {
       width: 76px; height: 76px; border-radius: 50%;
       background: linear-gradient(135deg, #FF6B81, #FFB6C1);
@@ -341,8 +415,8 @@
     .fg textarea { resize: vertical; min-height: 74px; }
     .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
-    /* ── SCREEN 6 – TICKET ──────────────────────────────────── */
-    #s6 {
+    /* ── SCREEN 7 – TICKET ──────────────────────────────────── */
+    #s7 {
       overflow-y: auto;
       padding: 44px 20px max(80px, calc(70px + env(safe-area-inset-bottom, 0px)));
       align-items: flex-start; flex-direction: column;
@@ -379,13 +453,14 @@
     }
     #qrc { display: flex; justify-content: center; margin-top: 16px; }
     #qrc canvas, #qrc img { border-radius: 8px; }
-    #s6-btn { text-align: center; margin-top: 22px; width: 100%; }
+    #s7-btn { text-align: center; margin-top: 22px; width: 100%; }
 
     /* ── RESPONSIVE ─────────────────────────────────────────── */
     @media (max-width: 520px) {
       .card { padding: 28px 22px; }
       .frow { grid-template-columns: 1fr; }
       .gif-wrap { width: 155px; height: 155px; }
+      .tl-title { font-size: 1.35rem; }
     }
 
     /* extra-small phones (e.g. Galaxy A, iPhone SE) */
@@ -429,6 +504,7 @@
     <div class="dot" id="d5"></div>
     <div class="dot" id="d6"></div>
     <div class="dot" id="d7"></div>
+    <div class="dot" id="d8"></div>
   </div>
 
   <!-- FABs -->
@@ -439,8 +515,8 @@
   <div id="easter">
     <div class="easter-card">
       <span style="font-size:3rem;display:block;margin-bottom:12px;animation:bob 2s ease-in-out infinite">😍</span>
-      <div class="script">Shhh... 🤫</div>
-      <p style="color:#7a4060;font-size:1.05rem;margin:14px 0 22px">Știai că deja sper să spui DA? ❤️</p>
+      <div class="script" id="easter-text">Shhh... 🤫</div>
+      <p style="color:#7a4060;font-size:1.05rem;margin:14px 0 22px" id="easter-body">Știai că deja sper să spui DA? ❤️</p>
       <button class="btn btn-pink" onclick="closeEaster()">Adorabil! 😊</button>
     </div>
   </div>
@@ -452,7 +528,7 @@
     <div style="text-align:center">
       <span class="ld-heart">❤️</span>
       <div class="ld-text">
-        Pregătesc o surpriză pentru tine
+        <span id="ld-text">Pregătesc o surpriză pentru tine</span>
         <span class="ld-dots"><span>.</span><span>.</span><span>.</span></span>
       </div>
       <div class="ld-bar-wrap"><div class="ld-bar"></div></div>
@@ -464,78 +540,91 @@
   ════════════════════════════════════════════════════ -->
   <div class="screen" id="s1">
     <div class="card">
-      <span class="emoji-bob">💌</span>
-      <div class="script" id="easter-title" style="cursor:pointer">
-        Am pregătit ceva special pentru tine ❤️
-      </div>
-      <p class="sub">Promit că durează doar câteva secunde.</p>
-      <button class="btn btn-pink" onclick="go(2)">Deschide surpriza ✨</button>
+      <span class="emoji-bob" id="welcome-emoji">💌</span>
+      <div class="script" id="easter-title" style="cursor:pointer"></div>
+      <p class="sub" id="welcome-sub"></p>
+      <button class="btn btn-pink" id="welcome-btn" onclick="go(2)"></button>
     </div>
   </div>
 
   <!-- ════════════════════════════════════════════════════
-       SCREEN 2 – CUTE QUESTION
+       SCREEN 2 – OUR STORY (TIMELINE)
   ════════════════════════════════════════════════════ -->
   <div class="screen" id="s2">
-    <div class="card">
-      <span class="emoji-bob">😊</span>
-      <div class="script">Crezi că meriți o surpriză frumoasă astăzi? 😊</div>
-      <p class="sub" style="margin-bottom:26px">Gândește-te bine... 🤍</p>
-      <div class="btn-row">
-        <button class="btn btn-pink" onclick="answerYes(this)">Da 🥰</button>
-        <button class="btn btn-pink" onclick="answerYes(this)" style="background:linear-gradient(135deg,#FFB6C1,#FF8E9E)">Absolut da ✨</button>
+    <div class="story-wrap">
+      <div class="script story-head" id="story-head"></div>
+      <p class="story-intro" id="story-intro"></p>
+      <div class="timeline" id="timeline"></div>
+      <div style="text-align:center">
+        <button class="btn btn-pink" id="story-btn" onclick="go(3)"></button>
       </div>
     </div>
   </div>
 
   <!-- ════════════════════════════════════════════════════
-       SCREEN 3 – ROMANTIC MESSAGE
+       SCREEN 3 – CUTE QUESTION
   ════════════════════════════════════════════════════ -->
   <div class="screen" id="s3">
     <div class="card">
-      <span class="emoji-bob">🌹</span>
-      <div id="typed-wrap">
-        <span id="typed"></span><span class="caret" id="caret"></span>
-      </div>
-      <div id="s3-second">
-        <p class="sub" style="font-style:italic">Și exact de aceea am o întrebare pentru tine... ❤️</p>
-        <button class="btn btn-pink" onclick="go(4)" style="margin-top:14px">Continuă ➜</button>
+      <span class="emoji-bob" id="q-emoji">😊</span>
+      <div class="script" id="q-title"></div>
+      <p class="sub" id="q-sub" style="margin-bottom:26px"></p>
+      <div class="btn-row">
+        <button class="btn btn-pink" id="q-yesA" onclick="answerYes(this)"></button>
+        <button class="btn btn-pink" id="q-yesB" onclick="answerYes(this)" style="background:linear-gradient(135deg,#FFB6C1,#FF8E9E)"></button>
       </div>
     </div>
   </div>
 
   <!-- ════════════════════════════════════════════════════
-       SCREEN 4 – MAIN PROPOSAL
+       SCREEN 4 – ROMANTIC MESSAGE
   ════════════════════════════════════════════════════ -->
   <div class="screen" id="s4">
+    <div class="card">
+      <span class="emoji-bob" id="msg-emoji">🌹</span>
+      <div id="typed-wrap">
+        <span id="typed"></span><span class="caret" id="caret"></span>
+      </div>
+      <div id="s4-second">
+        <p class="sub" id="msg-second" style="font-style:italic"></p>
+        <button class="btn btn-pink" id="msg-btn" onclick="go(5)" style="margin-top:14px"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════
+       SCREEN 5 – MAIN PROPOSAL
+  ════════════════════════════════════════════════════ -->
+  <div class="screen" id="s5">
     <div class="card" style="max-width:580px">
       <div class="gif-wrap" id="gif-wrap">
         <img
-          src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif"
+          id="prop-gif"
+          src=""
           alt="love"
           onerror="this.style.display='none';document.getElementById('gif-fb').style.display='block'"
         />
         <span class="gif-fallback" id="gif-fb" style="display:none">🐻</span>
       </div>
-      <div class="script">Ai vrea să ieși cu mine la o cină romantică? ❤️</div>
-      <p class="sub">Te rog, gândește-te bine... 🥺</p>
+      <div class="script" id="prop-title"></div>
+      <p class="sub" id="prop-sub"></p>
       <div class="btn-row" id="prop-btns">
-        <button class="btn btn-pink" id="btn-yes" onclick="sayYes()">Da ❤️</button>
+        <button class="btn btn-pink" id="btn-yes" onclick="sayYes()"></button>
         <!-- onmouseenter covers desktop; ontouchstart covers mobile (preventDefault stops the follow-up click) -->
-        <button id="btn-no" onmouseenter="runAway()" ontouchstart="runAway(event)">Nu 😅</button>
+        <button id="btn-no" onmouseenter="runAway()" ontouchstart="runAway(event)"></button>
       </div>
       <div id="funny-msg"></div>
     </div>
   </div>
 
   <!-- ════════════════════════════════════════════════════
-       SCREEN 5 – DATE SELECTION
+       SCREEN 6 – DATE SELECTION
   ════════════════════════════════════════════════════ -->
-  <div class="screen" id="s5">
+  <div class="screen" id="s6">
     <div class="card">
       <div class="celebrate-ring">🎉</div>
-      <div class="script">Yeeey! ❤️</div>
-      <p class="sub">Acum spune-mi când ești liberă.</p>
+      <div class="script" id="form-head"></div>
+      <p class="sub" id="form-sub"></p>
       <form id="date-form" onsubmit="confirmDate(event)">
         <div class="frow">
           <div class="fg">
@@ -551,20 +640,20 @@
           <label>💬 Notă (opțional)</label>
           <textarea id="inp-note" placeholder="Ex: după facultate, după serviciu etc."></textarea>
         </div>
-        <button type="submit" class="btn btn-pink" style="width:100%;padding:15px">Confirmă întâlnirea ❤️</button>
+        <button type="submit" class="btn btn-pink" id="form-submit" style="width:100%;padding:15px"></button>
       </form>
     </div>
   </div>
 
   <!-- ════════════════════════════════════════════════════
-       SCREEN 6 – DIGITAL TICKET
+       SCREEN 7 – DIGITAL TICKET
   ════════════════════════════════════════════════════ -->
-  <div class="screen" id="s6">
+  <div class="screen" id="s7">
     <div class="ticket" id="ticket">
       <div class="ticket-hd">
         <div style="font-size:2.2rem;margin-bottom:8px">🎫</div>
-        <div class="script">Invitație Confirmată ❤️</div>
-        <p>O seară de neuitat te așteaptă</p>
+        <div class="script" id="ticket-title"></div>
+        <p id="ticket-sub"></p>
       </div>
       <div class="ticket-bd">
         <div class="t-row">
@@ -587,32 +676,22 @@
         <div id="qrc"></div>
       </div>
     </div>
-    <div id="s6-btn">
-      <button class="btn btn-pink" onclick="go(7)" style="margin-top:0">Continuă ➜</button>
+    <div id="s7-btn">
+      <button class="btn btn-pink" onclick="go(8)" style="margin-top:0">Continuă ➜</button>
     </div>
   </div>
 
   <!-- ════════════════════════════════════════════════════
-       SCREEN 7 – FINAL MESSAGE
+       SCREEN 8 – FINAL MESSAGE
   ════════════════════════════════════════════════════ -->
-  <div class="screen" id="s7">
+  <div class="screen" id="s8">
     <div class="card">
-      <span class="emoji-bob" style="font-size:3.8rem">🌹</span>
-      <div class="script" style="font-size:clamp(1.5rem,4vw,2rem)">
-        Abia aștept să petrecem timpul împreună ❤️
-      </div>
-      <p class="sub">
-        Promit conversații interesante, zâmbete sincere și o seară frumoasă.
-      </p>
-      <p class="sub" style="font-size:.85rem;margin-bottom:26px">
-        Până atunci... gândul meu e la tine 🌸
-      </p>
-      <button class="btn btn-pink" id="final-btn" onclick="finalSend()">Trimite răspunsul 💌</button>
-      <div id="final-ok" style="display:none;margin-top:18px">
-        <span style="font-family:'Dancing Script',cursive;font-size:1.4rem;color:var(--rp)">
-          ❤️ Ne vedem în curând! ❤️
-        </span>
-      </div>
+      <span class="emoji-bob" id="final-emoji" style="font-size:3.8rem">🌹</span>
+      <div class="script" id="final-title" style="font-size:clamp(1.5rem,4vw,2rem)"></div>
+      <p class="sub" id="final-sub1"></p>
+      <p class="sub" id="final-sub2" style="font-size:.85rem;margin-bottom:26px"></p>
+      <button class="btn btn-pink" id="final-btn" onclick="finalSend()"></button>
+      <div id="final-ok" style="display:none;margin-top:18px"></div>
     </div>
   </div>
 
@@ -620,14 +699,147 @@
        JAVASCRIPT
   ════════════════════════════════════════════════════ -->
   <script>
-    // ─────────────────────────────────────────────────────
-    //  EMAILJS CONFIG — replace with your real values
-    //  (see setup instructions at the bottom of this file)
-    // ─────────────────────────────────────────────────────
-    const EJS_PUBLIC_KEY  = 'CbnYGvZz_5AWYSaj1';  // EmailJS → Account → Public Key
-    const EJS_SERVICE_ID  = 'service_52vcnsl';    // EmailJS → Email Services → Service ID
-    const EJS_TEMPLATE_ID = 'template_iwqddre';    // EmailJS → Email Templates → Template ID
-    const RECIPIENT_EMAIL = 'your@email.com';    // emailul tău unde vrei să primești răspunsul
+    /* ╔══════════════════════════════════════════════════════════════════╗
+       ║  CONFIG — EDITEAZĂ DOAR AICI                                       ║
+       ║                                                                    ║
+       ║  Tot conținutul (texte, poze, GIF-uri, email) se schimbă din acest ║
+       ║  singur obiect. Pentru o ocazie nouă (cerere în căsătorie,         ║
+       ║  aniversare etc.) modifică textele de mai jos — restul codului     ║
+       ║  rămâne neschimbat.                                                ║
+       ╚══════════════════════════════════════════════════════════════════╝ */
+    const CONFIG = {
+      occasion:  'cina',          // etichetă internă; viitor: 'cerere', 'aniversare', 'valentine'
+      photoBase: 'poze/',         // folderul cu pozele (1.jpg … 10.jpg)
+
+      // GIF-uri cu reacții pozitive (orice link .gif; dacă pică, apare emoji-ul)
+      gifs: {
+        love:  'https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif',
+        hug:   'https://media.giphy.com/media/od5H3PmEG5EVq/giphy.gif',
+        happy: 'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif'
+      },
+
+      loading: {
+        text: 'Pregătesc o surpriză pentru tine',
+        durationMs: 2900
+      },
+
+      welcome: {
+        emoji:    '💌',
+        title:    'Am pregătit ceva special pentru tine ❤️',
+        subtitle: 'Promit că durează doar câteva secunde.',
+        button:   'Începe ✨'
+      },
+
+      // ── ISTORIA NOASTRĂ (timeline cu poze) ──────────────────────────
+      story: {
+        heading: 'Istoria noastră ❤️',
+        intro:   'Două inimi, o partidă de fotbal, o iubire care începe din întâmplare.',
+        button:  'Mai departe ➜',
+        timeline: [
+          {
+            date:  'Octombrie 2024',
+            title: 'Numărul 12',
+            text:  'Totul a început la un meci de fotbal. O privire, numărul 12, și o senzație inexplicabilă pe care n-o puteam ignora.',
+            photo: 'photo_2024-11-05_00-23-01.jpg'
+          },
+          {
+            date:  'Lumea digitală',
+            title: 'Primul follow',
+            text:  'Un follow, o notiță pe Instagram… și, în acel colț de lume digitală, conversația noastră a început.',
+            photo: 'photo_2025-03-11_07-34-07.jpg',
+            gif:   'love'
+          },
+          {
+            date:  '21 Decembrie 2024',
+            title: 'Prima întâlnire',
+            text:  'O mașină gri, o îmbrățișare care a rescris anotimpurile. Iarna, dar o căldură care topea aerul rece.',
+            photo: 'photo_2026-04-10_23-51-47.jpg'
+          },
+          {
+            date:  'Ajun de Crăciun',
+            title: 'Momentul nostru',
+            text:  'Calm și nebunie, seriozitate și joacă — doi oameni care au devenit un întreg.',
+            photo: 'photo_2026-04-10_23-51-57.jpg',
+            gif:   'hug'
+          },
+          {
+            date:  'Destăinuire',
+            title: 'Îngerul meu păzitor',
+            text:  '„El este liniștea mea, îngerul meu păzitor… RESPECTUL lui valorează cât o lume, o lume imensă spre care mi-a deschis calea."',
+            photo: 'photo_2026-04-25_21-13-03.jpg'
+          }
+        ]
+      },
+
+      question: {
+        emoji: '😊',
+        title: 'Crezi că meriți o surpriză frumoasă astăzi? 😊',
+        sub:   'Gândește-te bine... 🤍',
+        yesA:  'Da 🥰',
+        yesB:  'Absolut da ✨'
+      },
+
+      message: {
+        emoji:      '🌹',
+        typedText:  'În ultima perioadă mi-am dat seama că momentele frumoase sunt și mai speciale atunci când sunt împărțite cu persoana potrivită.',
+        secondLine: 'Și exact de aceea am o întrebare pentru tine... ❤️',
+        button:     'Continuă ➜'
+      },
+
+      proposal: {
+        gif:      'love',          // cheie din CONFIG.gifs, sau un link .gif direct
+        title:    'Ai vrea să ieși cu mine la o cină romantică? ❤️',
+        sub:      'Te rog, gândește-te bine... 🥺',
+        yesLabel: 'Da ❤️',
+        noLabel:  'Nu 😅',
+        funny: [
+          'Ești sigură? 🥺',
+          'Mai gândește-te puțin ❤️',
+          'Refuzul nu este în baza de date 😆',
+          'Încă o șansă? 🌹',
+          'Nu e o opțiune validă 😅',
+          'Tastatura ta a greșit 🤭',
+          'Încearcă butonul roz! ❤️',
+          'Chiar ești sigură?? 🙈'
+        ],
+        gone: 'Mă bucur că ai ales înțelept! 😍'
+      },
+
+      dateForm: {
+        heading: 'Yeeey! ❤️',
+        sub:     'Acum spune-mi când ești liberă.',
+        submit:  'Confirmă întâlnirea ❤️'
+      },
+
+      ticket: {
+        headerTitle: 'Invitație Confirmată ❤️',
+        headerSub:   'O seară de neuitat te așteaptă',
+        codePrefix:  'DATE-'
+      },
+
+      final: {
+        emoji:   '🌹',
+        title:   'Abia aștept să petrecem timpul împreună ❤️',
+        sub1:    'Promit conversații interesante, zâmbete sincere și o seară frumoasă.',
+        sub2:    'Până atunci... gândul meu e la tine 🌸',
+        sendBtn: 'Trimite răspunsul 💌',
+        okText:  '❤️ Ne vedem în curând! ❤️'
+      },
+
+      easter: {
+        title: 'Shhh... 🤫',
+        body:  'Știai că deja sper să spui DA? ❤️'
+      },
+
+      // ── EMAILJS ─────────────────────────────────────────────────────
+      // Vezi instrucțiunile de configurare la finalul fișierului.
+      email: {
+        publicKey:  'CbnYGvZz_5AWYSaj1',   // EmailJS → Account → Public Key
+        serviceId:  'service_52vcnsl',     // EmailJS → Email Services → Service ID
+        templateId: 'template_iwqddre',    // EmailJS → Email Templates → Template ID
+        recipient:  'btudor38@gmail.com'   // emailul tău unde primești răspunsul
+      }
+    };
 
     // ─────────────────────────────────────────────────────
     //  STATE
@@ -640,14 +852,142 @@
     let masterGain = null;
     let loopTimer = null;
 
+    const LAST_SCREEN = 8;
+
     // saved form data — populated in confirmDate(), used in finalSend()
     let savedDate = '', savedTime = '', savedNote = '', savedCode = '';
+
+    // ─────────────────────────────────────────────────────
+    //  APPLY CONFIG → DOM
+    // ─────────────────────────────────────────────────────
+    function gifUrl(key) {
+      return (CONFIG.gifs && CONFIG.gifs[key]) ? CONFIG.gifs[key] : key;
+    }
+
+    function setText(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+    }
+
+    function applyConfig() {
+      // loading
+      setText('ld-text', CONFIG.loading.text);
+
+      // welcome
+      setText('welcome-emoji', CONFIG.welcome.emoji);
+      setText('easter-title', CONFIG.welcome.title);
+      setText('welcome-sub', CONFIG.welcome.subtitle);
+      setText('welcome-btn', CONFIG.welcome.button);
+
+      // story
+      setText('story-head', CONFIG.story.heading);
+      setText('story-intro', CONFIG.story.intro);
+      setText('story-btn', CONFIG.story.button);
+      buildTimeline();
+
+      // question
+      setText('q-emoji', CONFIG.question.emoji);
+      setText('q-title', CONFIG.question.title);
+      setText('q-sub',   CONFIG.question.sub);
+      setText('q-yesA',  CONFIG.question.yesA);
+      setText('q-yesB',  CONFIG.question.yesB);
+
+      // message
+      setText('msg-emoji',  CONFIG.message.emoji);
+      setText('msg-second', CONFIG.message.secondLine);
+      setText('msg-btn',    CONFIG.message.button);
+
+      // proposal
+      const pg = document.getElementById('prop-gif');
+      if (pg) pg.src = gifUrl(CONFIG.proposal.gif);
+      setText('prop-title', CONFIG.proposal.title);
+      setText('prop-sub',   CONFIG.proposal.sub);
+      setText('btn-yes',    CONFIG.proposal.yesLabel);
+      setText('btn-no',     CONFIG.proposal.noLabel);
+
+      // date form
+      setText('form-head',   CONFIG.dateForm.heading);
+      setText('form-sub',    CONFIG.dateForm.sub);
+      setText('form-submit', CONFIG.dateForm.submit);
+
+      // ticket
+      setText('ticket-title', CONFIG.ticket.headerTitle);
+      setText('ticket-sub',   CONFIG.ticket.headerSub);
+
+      // final
+      setText('final-emoji', CONFIG.final.emoji);
+      setText('final-title', CONFIG.final.title);
+      setText('final-sub1',  CONFIG.final.sub1);
+      setText('final-sub2',  CONFIG.final.sub2);
+      setText('final-btn',   CONFIG.final.sendBtn);
+
+      // easter
+      setText('easter-text', CONFIG.easter.title);
+      setText('easter-body', CONFIG.easter.body);
+    }
+
+    function buildTimeline() {
+      const wrap = document.getElementById('timeline');
+      if (!wrap) return;
+      wrap.innerHTML = '';
+
+      CONFIG.story.timeline.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'tl-item';
+
+        const date  = document.createElement('div');
+        date.className = 'tl-date';
+        date.textContent = item.date || '';
+
+        const title = document.createElement('div');
+        title.className = 'tl-title';
+        title.textContent = item.title || '';
+
+        const text  = document.createElement('div');
+        text.className = 'tl-text';
+        text.textContent = item.text || '';
+
+        card.appendChild(date);
+        card.appendChild(title);
+        card.appendChild(text);
+
+        if (item.photo) {
+          const img = document.createElement('img');
+          img.className = 'tl-photo';
+          img.loading = 'lazy';
+          img.alt = item.title || 'amintire';
+          img.src = CONFIG.photoBase + item.photo;
+          // if photo missing, show a soft gradient placeholder with a heart
+          img.onerror = function () {
+            const ph = document.createElement('div');
+            ph.className = 'tl-photo-fallback';
+            ph.textContent = '🌸';
+            img.replaceWith(ph);
+          };
+          card.appendChild(img);
+        }
+
+        if (item.gif) {
+          const g = document.createElement('img');
+          g.className = 'tl-gif';
+          g.loading = 'lazy';
+          g.alt = 'reacție';
+          g.src = gifUrl(item.gif);
+          g.onerror = function () { g.style.display = 'none'; };
+          card.appendChild(g);
+        }
+
+        wrap.appendChild(card);
+      });
+    }
 
     // ─────────────────────────────────────────────────────
     //  BOOT
     // ─────────────────────────────────────────────────────
     window.addEventListener('load', () => {
-      emailjs.init({ publicKey: EJS_PUBLIC_KEY });
+      emailjs.init({ publicKey: CONFIG.email.publicKey });
+
+      applyConfig();
 
       spawnHearts();
       document.addEventListener('click', onBodyClick);
@@ -664,7 +1004,7 @@
         document.getElementById('btn-dark').textContent = '☀️';
       }
 
-      setTimeout(() => go(1), 2900);
+      setTimeout(() => go(1), CONFIG.loading.durationMs);
     });
 
     // ─────────────────────────────────────────────────────
@@ -689,6 +1029,7 @@
         const next = document.getElementById('s' + n);
         if (!next) return;
         next.classList.add('visible');
+        next.scrollTop = 0;
         requestAnimationFrame(() => requestAnimationFrame(() => {
           next.style.transition = 'opacity .55s ease';
           next.classList.add('shown');
@@ -699,12 +1040,12 @@
     }
 
     function onEnter(n) {
-      if (n === 3) startTyping();
-      if (n === 5) launchConfetti();
+      if (n === 4) startTyping();
+      if (n === 6) launchConfetti();
     }
 
     function updateDots(n) {
-      for (let i = 1; i <= 7; i++) {
+      for (let i = 1; i <= LAST_SCREEN; i++) {
         const d = document.getElementById('d' + i);
         if (d) d.classList.toggle('on', i === n);
       }
@@ -740,7 +1081,7 @@
     // ─────────────────────────────────────────────────────
     function onBodyClick(e) {
       const tag = e.target.tagName.toLowerCase();
-      if (['button','input','textarea','label','a'].includes(tag)) return;
+      if (['button','input','textarea','label','a','img'].includes(tag)) return;
       spawnClickHeart(e.clientX, e.clientY);
     }
 
@@ -764,24 +1105,25 @@
     }
 
     // ─────────────────────────────────────────────────────
-    //  SCREEN 2 – CUTE QUESTION
+    //  SCREEN 3 – CUTE QUESTION
     // ─────────────────────────────────────────────────────
     function answerYes(btn) {
       const r = btn.getBoundingClientRect();
       burstHearts(r.left + r.width/2, r.top + r.height/2, 7);
-      setTimeout(() => go(3), 450);
+      setTimeout(() => go(4), 450);
     }
 
     // ─────────────────────────────────────────────────────
-    //  SCREEN 3 – TYPING ANIMATION
+    //  SCREEN 4 – TYPING ANIMATION
     // ─────────────────────────────────────────────────────
     function startTyping() {
-      const TEXT = 'În ultima perioadă mi-am dat seama că momentele frumoase sunt și mai speciale atunci când sunt împărțite cu persoana potrivită.';
+      const TEXT = CONFIG.message.typedText;
       const el    = document.getElementById('typed');
       const caret = document.getElementById('caret');
-      const sec   = document.getElementById('s3-second');
+      const sec   = document.getElementById('s4-second');
 
       el.textContent = '';
+      caret.style.display = 'inline-block';
       sec.style.display = 'none';
       let i = 0;
 
@@ -806,19 +1148,8 @@
     }
 
     // ─────────────────────────────────────────────────────
-    //  SCREEN 4 – NO BUTTON
+    //  SCREEN 5 – NO BUTTON
     // ─────────────────────────────────────────────────────
-    const FUNNY = [
-      'Ești sigură? 🥺',
-      'Mai gândește-te puțin ❤️',
-      'Refuzul nu este în baza de date 😆',
-      'Încă o șansă? 🌹',
-      'Nu e o opțiune validă 😅',
-      'Tastatura ta a greșit 🤭',
-      'Încearcă butonul roz! ❤️',
-      'Chiar ești sigură?? 🙈'
-    ];
-
     function runAway(e) {
       // on touch devices, prevent the follow-up click event from firing twice
       if (e && e.cancelable && e.type === 'touchstart') e.preventDefault();
@@ -828,6 +1159,7 @@
       noCount++;
 
       // show funny message
+      const FUNNY = CONFIG.proposal.funny;
       document.getElementById('funny-msg').textContent =
         FUNNY[Math.min(noCount - 1, FUNNY.length - 1)];
 
@@ -858,7 +1190,7 @@
         btn.style.opacity = '0';
         setTimeout(() => {
           btn.style.display = 'none';
-          document.getElementById('funny-msg').textContent = 'Mă bucur că ai ales înțelept! 😍';
+          document.getElementById('funny-msg').textContent = CONFIG.proposal.gone;
         }, 500);
       }
     }
@@ -871,7 +1203,7 @@
       const r = yes.getBoundingClientRect();
       burstHearts(r.left + r.width/2, r.top + r.height/2, 14);
 
-      setTimeout(() => go(5), 550);
+      setTimeout(() => go(6), 550);
     }
 
     // ─────────────────────────────────────────────────────
@@ -924,7 +1256,7 @@
     }
 
     // ─────────────────────────────────────────────────────
-    //  SCREEN 5 – DATE FORM
+    //  SCREEN 6 – DATE FORM
     // ─────────────────────────────────────────────────────
     function confirmDate(e) {
       e.preventDefault();
@@ -941,7 +1273,7 @@
 
       // generate unique code
       const CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-      let code = 'DATE-';
+      let code = CONFIG.ticket.codePrefix;
       for (let i = 0; i < 6; i++) code += CHARS[Math.floor(Math.random() * CHARS.length)];
 
       // persist for emailjs
@@ -977,11 +1309,11 @@
         qrc.innerHTML = '<div style="padding:12px;background:#FCE4EC;border-radius:8px;color:var(--rp);font-size:.85rem">❤️ ' + code + ' ❤️</div>';
       }
 
-      go(6);
+      go(7);
     }
 
     // ─────────────────────────────────────────────────────
-    //  SCREEN 7 – FINAL  (sends email via EmailJS)
+    //  SCREEN 8 – FINAL  (sends email via EmailJS)
     // ─────────────────────────────────────────────────────
     function finalSend() {
       const btn  = document.getElementById('final-btn');
@@ -991,8 +1323,8 @@
       btn.disabled    = true;
       btn.style.opacity = '.75';
 
-      emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, {
-        to_email: RECIPIENT_EMAIL,
+      emailjs.send(CONFIG.email.serviceId, CONFIG.email.templateId, {
+        to_email: CONFIG.email.recipient,
         data:     savedDate,
         ora:      savedTime,
         nota:     savedNote || '—',
@@ -1002,7 +1334,7 @@
         btn.textContent = 'Trimis! ❤️';
         okEl.innerHTML  =
           '<span style="font-family:\'Dancing Script\',cursive;font-size:1.4rem;color:var(--rp)">' +
-          '❤️ Ne vedem în curând! ❤️</span>';
+          CONFIG.final.okText + '</span>';
         okEl.style.display = 'block';
         celebrate();
       })
@@ -1144,11 +1476,11 @@
     ║                                                          ║
     ║ 4. Account → General → copiază Public Key               ║
     ║                                                          ║
-    ║ 5. Înlocuiește în fișier (sus, în secțiunea CONFIG):     ║
-    ║      EJS_PUBLIC_KEY  = 'cheia_ta_publica'               ║
-    ║      EJS_SERVICE_ID  = 'service_xxxxxxx'                ║
-    ║      EJS_TEMPLATE_ID = 'template_xxxxxxx'               ║
-    ║      RECIPIENT_EMAIL = 'emailul_tau@gmail.com'          ║
+    ║ 5. Înlocuiește în obiectul CONFIG.email (sus în fișier): ║
+    ║      publicKey:  'cheia_ta_publica'                     ║
+    ║      serviceId:  'service_xxxxxxx'                      ║
+    ║      templateId: 'template_xxxxxxx'                     ║
+    ║      recipient:  'emailul_tau@gmail.com'                ║
     ╚══════════════════════════════════════════════════════════╝
     */
   </script>
